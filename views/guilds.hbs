@@ -7,7 +7,9 @@
   <div class="row small-up-2 medium-up-3 large-up-6">
     {{#each guilds}}
       <div class="column">
-        <img class="thumbnail" width="400" height="300" src="{{image_url}}" alt="{{name}}'s Guild Image">
+        <a href="/guild/{{slug}}">
+          <img class="thumbnail" width="400" height="300" src="{{image_url}}" alt="{{name}}'s Guild Image">
+        </a>
         <h5>{{name}}</h5>
         <p>{{members.length}} members(s)</p>
         <a href="/guild/{{slug}}" class="button small expanded hollow">More Info</a>

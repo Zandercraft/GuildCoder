@@ -3,6 +3,8 @@ const express = require('express')
 // const multer = require('multer') // Multer - file upload processing
 const hbs = require('hbs') // Handlebars - templating
 const session = require('express-session') // Express-Session - Server-side client session handling
+const MongoStore = require('connect-mongo') // Express-Session - Session Storage in MongoDB
+const mongoString = require('./bin/www').mongoString
 const cookieParser = require('cookie-parser') // (Session dependency) - Cookie parsing
 const app = express()
 
@@ -48,13 +50,19 @@ hbs.registerHelper("formatDate", function(date) {
   let unformattedDate = new Date(date)
   return String(unformattedDate.toISOString().slice(0, 10)) // Return only date portion of string
 });
+hbs.registerHelper('equals', function(arg1, arg2, options) {
+  return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+});
 
 // --- Middleware Setup ---
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(session({ secret: 'SecretKey' }))
+app.use(session({
+  secret: 'SecretKey',
+  store: MongoStore.create({ mongoUrl: "mongodb+srv://senecaDBUser:nVZpo97O15m7L6EQ@seneca-web.vw4knv6.mongodb.net/web322_week8" })
+}))
 app.use(express.static(path.join(__dirname, 'public')))
 
 // --- Routers ---

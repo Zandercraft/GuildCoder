@@ -1,4 +1,4 @@
-<div class="single-item large-centered ">
+<div class="single-item large-centered">
   {{#each featured_projects}}
     <div>
       <figure class="orbit-figure">
@@ -19,7 +19,9 @@
 <div class="row small-up-2 medium-up-3 large-up-6">
   {{#each popular_projects}}
     <div class="column">
-      <img class="thumbnail" width="400" height="300" src="{{image_url}}" alt="{{name}}'s Project Image">
+      <a href="/project/{{slug}}">
+        <img class="thumbnail" width="400" height="300" src="{{image_url}}" alt="{{name}}'s Project Image">
+      </a>
       <h5>{{name}}</h5>
       <p>{{collaborators.length}} collaborators(s)</p>
       <a href="/project/{{slug}}" class="button small expanded hollow">Collab</a>

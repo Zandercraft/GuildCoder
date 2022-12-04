@@ -221,17 +221,39 @@ exports.authUser = (u_email, u_password) => {
  * Updates the user with the given email address.
 */
 exports.updateUser = (u_email, object) => {
-  return User.updateOne(
-    { email: u_email },
-    { $set: object }
-  ).exec().then(() => {
-    // Updated user successfully
-    return true
-  }).catch((reason) => {
-    // Failed to update the user
-    process.stdout.write(`ERROR (while updating user): ${reason}\n`)
+  return bcrypt.genSalt(10).then((Salt) => {
+    return bcrypt.hash(object.password, Salt).then((hash) => {
+      if (object.password.length > 0) {
+        object.password = hash;
+      } else {
+        object.password = object.old_password
+      }
+      delete object.old_password
+
+      // Update User
+      return User.updateOne(
+        { email: u_email },
+        { $set: object }
+      ).exec().then(() => {
+        // Updated user successfully
+        return true
+      }).catch((reason) => {
+        // Failed to update the user
+        process.stdout.write(`ERROR (while updating user): ${reason}\n`)
+        return false
+      })
+    }).catch((err) => {
+      // Issue creating hashed password
+      process.stdout.write(`ERROR (while hashing password): ${err}`)
+      return false
+    })
+  }).catch((err) => {
+    // Issue creating hashed object salt
+    process.stdout.write(`ERROR (while generating password salt): ${err}`)
     return false
   })
+
+
 }
 
 // -- Project-Related Functions --

@@ -1,7 +1,9 @@
 body {
+    font-family: "Noto Sans", sans-serif;
 }
+
 .logo {
-    font-family: Pacifico, serif;
+    font-family: Pacifico, sans-serif;
     font-style: normal;
     font-size: 26px;
     font-weight: 700;
@@ -12,9 +14,42 @@ body {
 }
 
 .logo-inline {
-    font-family: Pacifico, serif;
+    font-family: Pacifico, sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: inherit;
     color: black;
+}
+
+.profile-picture {
+    padding-top:20px;
+    position:relative;
+    display:inline-block;
+}
+
+.p-badge {
+    position: absolute;
+    right:-10px;
+    bottom:10px;
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color:white;
+    padding:10px 10px;
+    font-size:20px;
+}
+
+.badge-Beginner{
+    background:deepskyblue;
+}
+
+.badge-Intermediate{
+    background:green;
+}
+
+.badge-Experienced {
+    background:orange;
+}
+
+.badge-Expert {
+    background:red;
 }

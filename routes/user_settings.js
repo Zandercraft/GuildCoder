@@ -18,7 +18,7 @@ router.get('/', function (req, res) {
 })
 
 /* POST user settings form. */
-router.post('/', function (req, res) {
+router.post('/', async function (req, res) {
   const sessionUser = req.session.user
 
   // Only accept data if user is logged in
@@ -47,7 +47,7 @@ router.post('/', function (req, res) {
           database.authUser(sessionUser.email, req.body.password).then((user) => {
             if (user[0] !== false) {
               let showContactEmail = (req.body.show_contact_email !== undefined)
-              console.log(req.body.show_contact_email)
+              // Check if new password specified
               database.updateUser(sessionUser.email, {
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
@@ -58,13 +58,14 @@ router.post('/', function (req, res) {
                 profile_header: req.body.profile_header,
                 extended_bio: req.body.extended_bio,
                 icon_url: req.body.icon_url,
-                contact_schedule: req.body.contact_schedule
-                // TODO: Add password update support (needs to hash)
-              }).then((updateStatus) => {
+                contact_schedule: req.body.contact_schedule,
+                skill: req.body.skill,
+                password: req.body.new_password,
+                old_password: sessionUser.password
+              }).then((updatedUser) => {
                 // Ensure user was updated successfully
-                if (updateStatus) {
+                if (updatedUser) {
                   // Updated successfully, log user out and redirect home
-                  req.session.destroy()
                   res.redirect('/')
                 } else {
                   // User update failed

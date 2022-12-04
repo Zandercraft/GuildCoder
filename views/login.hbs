@@ -23,7 +23,6 @@
             Password
             <input type="password" name="password" placeholder="********" required>
           </label>
-          <div class="g-recaptcha" data-sitekey="{{captcha_site_key}}"></div>
           <br />
           <button class="button expanded" type="submit">Log In</button>
         </form>
@@ -31,11 +30,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  // ReCaptcha Callback
-  function onSubmit(token) {
-    console.log(token)
-    document.getElementById("login-form").submit()
-  }
-</script>

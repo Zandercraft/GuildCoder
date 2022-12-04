@@ -80,10 +80,10 @@
           <div class="grid-x grid-padding-x column">
             <fieldset class="large-5 cell">
               <legend>Programming Skill Level</legend>
-              <input type="radio" name="skill" value="Beginner" id="beginner" required><label for="beginner">Beginner</label>
-              <input type="radio" name="skill" value="Intermediate" id="intermediate"><label for="intermediate">Intermediate</label>
-              <input type="radio" name="skill" value="Experienced" id="experienced"><label for="experienced">Experienced</label>
-              <input type="radio" name="skill" value="Expert" id="expert"><label for="expert">Expert</label>
+              <input type="radio" name="skill" value="Beginner" id="beginner" {{#equals user.skill "Beginner"}}checked{{/equals}} required><label for="beginner">Beginner</label>
+              <input type="radio" name="skill" value="Intermediate" id="intermediate" {{#equals user.skill "Intermediate"}}checked{{/equals}}><label for="intermediate">Intermediate</label>
+              <input type="radio" name="skill" value="Experienced" id="experienced" {{#equals user.skill "Experienced"}}checked{{/equals}}><label for="experienced">Experienced</label>
+              <input type="radio" name="skill" value="Expert" id="expert" {{#equals user.skill "Expert"}}checked{{/equals}}><label for="expert">Expert</label>
             </fieldset>
           </div>
           <button type="submit" class="button expanded">Update</button>

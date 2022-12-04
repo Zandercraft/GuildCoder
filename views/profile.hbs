@@ -3,8 +3,12 @@
     <div class="off-canvas position-left reveal-for-large" id="my-info" data-off-canvas data-position="left">
       <div class="row column">
         <br>
-        <img class="thumbnail" src="{{profile.icon_url}}">
+        <div class="profile-picture">
+          <span class="p-badge badge-{{profile.skill}}" title="{{profile.skill}}"></span>
+          <img class="thumbnail" src="{{profile.icon_url}}">
+        </div>
         <h5>{{profile.first_name}} {{profile.last_name}}</h5>
+        <p>Skill: {{profile.skill}}</p>
         <p>{{profile.bio}}</p>
       </div>
     </div>
