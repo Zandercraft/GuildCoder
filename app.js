@@ -4,7 +4,6 @@ const express = require('express')
 const hbs = require('hbs') // Handlebars - templating
 const session = require('express-session') // Express-Session - Server-side client session handling
 const MongoStore = require('connect-mongo') // Express-Session - Session Storage in MongoDB
-const mongoString = require('./bin/www').mongoString
 const cookieParser = require('cookie-parser') // (Session dependency) - Cookie parsing
 const app = express()
 
@@ -60,7 +59,13 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(session({
-  secret: 'SecretKey',
+  secret: 'GuildCoderSecretKey',
+  cookie: {
+    maxAge: 3600000, // 1 hour (milliseconds)
+    sameSite: 'strict', // Set SameSite to Strict same-site enforcement
+  },
+  resave: false,
+  saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: "mongodb+srv://senecaDBUser:nVZpo97O15m7L6EQ@seneca-web.vw4knv6.mongodb.net/web322_week8" })
 }))
 app.use(express.static(path.join(__dirname, 'public')))
