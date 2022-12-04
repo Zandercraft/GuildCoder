@@ -1,0 +1,17 @@
+Copyright © 2022 Zander Maitland. All rights reserved.
+
+Non-transferable permission is hereby granted, free of charge, to Professor Sunny Shi of Seneca College, obtaining a
+copy of these software files (the "Software"), to exercise, in a limited capacity, the rights to use, copy, modify, and
+demonstrate the capabilities of the Software; subject to the following conditions:
+
+- Modification is carried out solely for the purpose of fixing issues that prevent the software from running.
+- The Software may not be redistributed to any other persons.
+- The Software must be used solely for the purpose of education.
+- The Software may not be sold.
+- This permission may not be transferred.
+- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
