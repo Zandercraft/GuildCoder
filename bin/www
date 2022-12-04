@@ -39,8 +39,8 @@ io.on('connection', (socket) => {
   process.stdout.write('Socket.io: A user connected to the socket.\n');
 
   // Set up a listener to forward when a new message is sent
-  socket.on('chat_message_sent', () => {
-    io.emit("new_chat_message")
+  socket.on('chat_message_sent', (guild_slug) => {
+    io.emit(`new_chat_message_${guild_slug}`)
   })
 
   // Setup listener for the user's disconnect
@@ -107,4 +107,4 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-exports.io = io
+module.exports.sio = io

@@ -3,7 +3,6 @@ const database = require('../database')
 const utils = require('../utils')
 const slugify = require('slugify')
 const router = express.Router()
-const io = require('../bin/www').io
 
 /* GET guild creation page. */
 router.get('/create', function (req, res) {
@@ -153,9 +152,6 @@ router.post('/:guild/messages', function (req, res) {
         } else {
           // All information was supplied. Submit the message.
           database.addMessage(guildSlug, {author: sessionUser._id, message: req.body.message, sent_on: new Date(), edited: false}).then(() => {
-            // Emit a message event via socket.io to all clients
-            console.log("Sending io message to clients")
-            io.emit('chat_message')
             res.sendStatus(200)
           }).catch(() => {
             // Encountered an issue adding the message.

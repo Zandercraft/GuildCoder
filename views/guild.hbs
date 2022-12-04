@@ -139,7 +139,7 @@
           // Send the message
           sendMessage({ message: $("#message").val() })
           await new Promise(r => setTimeout(r, 300)) // Wait a bit for server to process data
-          socket.emit("chat_message_sent") // Send message sent event
+          socket.emit("chat_message_sent", "{{guild.slug}}") // Send message sent event
           document.getElementById("message").value = '' // Empty chat entry box
         })
 
@@ -153,7 +153,7 @@
             // Send the message
             sendMessage({ message: $("#message").val() })
             await new Promise(r => setTimeout(r, 300)) // Wait a bit for server to process data
-            socket.emit("chat_message_sent") // Send message sent event
+            socket.emit("chat_message_sent", "{{guild.slug}}") // Send message sent event
             document.getElementById("message").value = '' // Empty chat entry box
 
             // Re-enable the chat box
@@ -197,7 +197,7 @@
         }
 
         // Register message listener.
-        socket.on('new_chat_message', getMessages)
+        socket.on('new_chat_message_{{guild.slug}}', getMessages)
 
         // Fetch all messages on load.
         getMessages()
