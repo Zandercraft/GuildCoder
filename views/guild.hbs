@@ -1,0 +1,208 @@
+<br>
+{{#if success_message}}
+  <!-- Success Message Alert -->
+  <div class="callout success">
+    <p>{{success_message}}</p>
+  </div>
+{{/if}}
+<div class="row">
+  <div class="medium-6 columns">
+    <img class="thumbnail" src="https://via.placeholder.com/650x350">
+  </div>
+  <div class="medium-6 large-5 columns">
+    <h3>{{title}}</h3>
+    <p>{{guild.description}}</p>
+
+    {{#unless is_user_involved}}
+      <a href="/guild/{{guild.slug}}/join" class="button large expanded">Join!</a>
+    {{/unless}}
+
+    <div class="small secondary expanded button-group">
+        <a class="button" href="{{guild.website}}"><i class="fa-solid fa-globe"></i> Website</a>
+        <a class="button" href=""><i class="fa-brands fa-twitter"></i> Twitter</a>
+        <a class="button" href=""><i class="fa-brands fa-facebook"></i> Facebook</a>
+      </div>
+    </div>
+</div>
+
+<div class="column row">
+  <hr>
+  <ul class="tabs" data-tabs id="example-tabs">
+    {{#if is_user_involved}}
+      <li class="tabs-title is-active"><a href="#chat">Chat</a></li>
+    {{/if}}
+    <li class="tabs-title {{#unless is_user_involved}}is-active{{/unless}}"><a href="#projects">Projects</a></li>
+    <li class="tabs-title"><a href="#members">Members</a></li>
+  </ul>
+  <div class="tabs-content" data-tabs-content="example-tabs">
+    {{#if is_user_involved}}
+      <!-- Guild Chat -->
+      <div class="tabs-panel is-active" id="chat">
+        <h4>Guild Chat</h4>
+        {{#if guild.messages}}
+          <div id="guild_messages" style="height: 21em; line-height: 3em; overflow: auto; padding: 5px;">
+
+          </div>
+        {{else}}
+          <!-- No guild projects card -->
+          <div class="callout primary">
+            <p><em>No messages yet. Be the first to send one!</em></p>
+          </div>
+        {{/if}}
+        <div id="message_form">
+          <label>
+            <input id="message" type="text" placeholder="Your message."></input>
+          </label>
+          <button id="send_message" class="button">Send</button>
+        </div>
+      </div>
+    {{/if}}
+    <!-- Guild Projects -->
+    <div class="tabs-panel {{#unless is_user_involved}}is-active{{/unless}}" id="projects">
+      <h4>Projects</h4>
+      <div class="row medium-up-3 large-up-5">
+        {{#each projects}}
+          <div class="column">
+            <img class="thumbnail" src="{{image_url}}" alt="{{name}}'s Project Image">
+            <h5>{{name}}</h5>
+            <p>{{description_short}}</p>
+            <a href="/project/{{slug}}" class="button hollow tiny expanded">Collab</a>
+          </div>
+        {{else}}
+          <!-- No guild projects card -->
+          <div class="callout primary">
+            <p><em>This guild has no projects yet.</em></p>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <!-- Members Tab -->
+    <div class="tabs-panel" id="members">
+      <h4>Members</h4>
+      {{#each guild.owners}}
+        <div class="media-object stack-for-small">
+          <div class="media-object-section">
+            <a href="/profile/{{username}}">
+              <img class="thumbnail" width="100" height="100" src="{{icon_url}}" alt="{{username}}'s profile picture">
+            </a>
+          </div>
+          <div class="media-object-section">
+            <h5>{{first_name}} {{last_name}} <strong class="logo-inline">- Owner</strong></h5>
+            <p>{{bio}}</p>
+          </div>
+        </div>
+      {{/each}}
+      {{#each guild.members}}
+        <div class="media-object stack-for-small">
+          <div class="media-object-section">
+            <a href="/profile/{{username}}">
+              <img class="thumbnail" width="100" height="100" src="{{icon_url}}" alt="{{username}}'s profile picture">
+            </a>
+          </div>
+          <div class="media-object-section">
+            <h5>{{first_name}} {{last_name}}</h5>
+            <p>{{bio}}</p>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+<br />
+
+{{#if is_user_involved}}
+  <!-- Socket.io Chat System Scripts -->
+  <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+
+  <script>
+    // --- Client-Sided Send Handler (Reduce need for page refreshes) ---
+    let socket = io();
+
+    $(document).ready(
+      () => {
+        function scrollToBottom(){
+          let chat_box = document.getElementById("guild_messages");
+          chat_box.scrollTop = chat_box.scrollHeight;
+        }
+
+        // Listen for click events on the send button
+        $("#send_message").click(async () => {
+          // Send the message
+          sendMessage({ message: $("#message").val() })
+          await new Promise(r => setTimeout(r, 300)) // Wait a bit for server to process data
+          socket.emit("chat_message_sent") // Send message sent event
+          document.getElementById("message").value = '' // Empty chat entry box
+        })
+
+        // Listen for enter keypress events on the input box
+        $("#message").on("keypress", async (e) => {
+          // Ensure it is the enter key
+          if (e.which === 13) {
+            // Disable the chat box to prevent multiple submissions
+            $(this).attr("disabled", "disabled");
+
+            // Send the message
+            sendMessage({ message: $("#message").val() })
+            await new Promise(r => setTimeout(r, 300)) // Wait a bit for server to process data
+            socket.emit("chat_message_sent") // Send message sent event
+            document.getElementById("message").value = '' // Empty chat entry box
+
+            // Re-enable the chat box
+            $(this).removeAttr("disabled");
+          }
+        })
+
+        // Adds a message to the list of messages
+        function addMessage(message){
+          let timestamp = new Date(message.sent_on)
+          $("#guild_messages").append(`
+            <div class="column">
+              <h6><a href='${message.author.username === "Deleted User" ? "" : "/profile/" + message.author.username}'>${message.author.username}</a><small> - ${String(timestamp.toDateString())} - ${String(timestamp.toLocaleTimeString('en-CA'))}</small></h6>
+              <p>
+                ${message.message} ${message.edited ? '<small><em>(edited)</em></small>' : ''}
+              </p>
+            </div>
+          `)
+        }
+
+        // Gets all the messages from the server.
+        function getMessages(){
+          console.log("Fetching messages from server...")
+
+          // Delete all visible messages
+          document.getElementById("guild_messages").innerHTML = ''
+
+          // Get new messages and add them.
+          $.get(`${window.location.href}/messages`, (messages) => {
+            console.log(messages)
+            messages.forEach(addMessage)
+            scrollToBottom()
+          })
+        }
+
+        // Sends a message to the server.
+        function sendMessage(message){
+          console.log("Sending message to server...")
+          $.post(`${window.location.href}/messages`, message)
+          scrollToBottom()
+        }
+
+        // Register message listener.
+        socket.on('new_chat_message', getMessages)
+
+        // Fetch all messages on load.
+        getMessages()
+        scrollToBottom()
+    })
+  </script>
+{{/if}}
+
+{{#if redirectToGuild}}
+  <script>
+    window.setTimeout(function(){
+      // Move back to guild page after 5 seconds.
+      window.location.href = "/guild/{{guild.slug}}";
+    }, 5000);
+  </script>
+{{/if}}

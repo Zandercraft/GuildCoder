@@ -1,0 +1,22 @@
+<div class="row column text-center">
+  <br />
+  <h2>{{title}}</h2>
+  <hr>
+</div>
+{{#if projects}}
+  <div class="row small-up-2 medium-up-3 large-up-6">
+    {{#each projects}}
+      <div class="column">
+        <img class="thumbnail" width="400" height="300" src="{{image_url}}" alt="{{name}}'s Project Image">
+        <h5>{{name}}</h5>
+        <p>{{collaborators.length}} collaborators(s)</p>
+        <a href="/project/{{slug}}" class="button small expanded hollow">Collab</a>
+      </div>
+    {{/each}}
+  </div>
+{{else}}
+  <div class="callout primary large-centered">
+    <h5>No projects yet :(</h5>
+    <p><em>Be the first to <a href="/create">create one!</a></em></p>
+  </div>
+{{/if}}

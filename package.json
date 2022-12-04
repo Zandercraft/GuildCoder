@@ -1,0 +1,49 @@
+{
+  "name": "guild-coder",
+  "version": "1.0.0",
+  "description": "A platform to find other people interested in collaborating with you on software projects.",
+  "author": "Zander Maitland",
+  "maintainers": [
+    "Zander Maitland"
+  ],
+  "contributors": [
+    "Zander Maitland"
+  ],
+  "license": "UNLICENSED",
+  "homepage": "https://guildcoder.ca",
+  "keywords": [],
+  "repository": {
+    "url": "https://github.com/Zandercraft/GuildCoder"
+  },
+  "bugs": {
+    "url": "https://github.com/Zandercraft/GuildCoder/issues",
+    "email": "support@zandercraft.ca"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "lint": "standard --fix"
+  },
+  "dependencies": {
+    "axios": "^1.1.3",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-recaptcha": "^5.1.0",
+    "express-session": "^1.17.3",
+    "hbs": "^4.2.0",
+    "http-errors": "~1.6.3",
+    "mongoose": "^6.7.1",
+    "mongoose-dbref": "^0.0.4",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.5-lts.1",
+    "slugify": "^1.6.5",
+    "socket.io": "^4.5.3"
+  },
+  "devDependencies": {
+    "motion-ui": "^2.0.4",
+    "nodemon": "^2.0.20",
+    "standard": "^17.0.0"
+  }
+}

@@ -1,0 +1,65 @@
+<div class="off-canvas-wrapper">
+  <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+    <div class="callout primary">
+      <div class="row column">
+        <h1 class="logo">Start your Journey with GuildCoder!</h1>
+        <p class="lead">Join <span class="logo-inline">GuildCoder</span> to start collaborating with other developers on projects and make acquaintances along the way!</p>
+      </div>
+    </div>
+    <div class="large-centered">
+      {{#if error_message}}
+        <!-- Error Message Alert -->
+        <div class="callout alert">
+          <p aria-errormessage>{{error_message}}</p>
+        </div>
+      {{/if}}
+      <form id="register-form" method="post" action="/register">
+        <div class="row column">
+          <div class="medium-6 column">
+            <label>First Name
+              <input type="text" name="first_name" placeholder="John" required>
+            </label>
+          </div>
+          <div class="medium-6 column">
+            <label>Last Name
+              <input type="text" name="last_name" placeholder="Doe" required>
+            </label>
+          </div>
+          <div class="medium-6 column">
+            <label>Username
+              <input type="text" name="username" placeholder="Username" required>
+            </label>
+          </div>
+          <div class="medium-6 column">
+            <label>Email
+              <input type="email" name="email" placeholder="johndoe@example.com" required>
+            </label>
+          </div>
+          <div class="medium-6 column">
+            <label>
+              Password
+              <input type="password" name="password" placeholder="********" required>
+            </label>
+          </div>
+          <div class="grid-x grid-padding-x">
+            <fieldset class="large-5 cell">
+              <legend>What is your level of programming skill?</legend>
+              <input type="radio" name="skill" value="Beginner" id="beginner" required><label for="beginner">Beginner</label>
+              <input type="radio" name="skill" value="Intermediate" id="intermediate"><label for="intermediate">Intermediate</label>
+              <input type="radio" name="skill" value="Experienced" id="experienced"><label for="experienced">Experienced</label>
+              <input type="radio" name="skill" value="Expert" id="expert"><label for="expert">Expert</label>
+            </fieldset>
+          </div>
+          <button class="button expanded g-recaptcha" data-sitekey="{{captcha_site-key}}" data-callback='onSubmit' data-action="submit">Register</button>
+          <p>By clicking "Register", you agree to our <a href="/terms">Terms and Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  // ReCaptcha Callback
+  function onSubmit(token) {
+    document.getElementById("register-form").submit();
+  }
+</script>

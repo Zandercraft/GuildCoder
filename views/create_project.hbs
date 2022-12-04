@@ -1,0 +1,59 @@
+<div class="off-canvas-wrapper">
+  <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+    <div class="callout primary">
+      <div class="row column">
+        <h1 class="logo">Let's get Collaborating!</h1>
+        <p class="lead">List your project on <span class="logo-inline">GuildCoder</span> to find and start collaborating with other developers!</p>
+      </div>
+    </div>
+    <div class="large-centered">
+      {{#if error_message}}
+        <!-- Error Message Alert -->
+        <div class="callout alert">
+          <p aria-errormessage>{{error_message}}</p>
+        </div>
+      {{/if}}
+      {{#if user}}
+        <form method="post" action="/project/create">
+          <div class="row column">
+            <div class="medium-6 column">
+              <label>Project Name
+                <input type="text" name="name" placeholder="My Awesome Project" required>
+              </label>
+            </div>
+            <div class="medium-6 column">
+              <label>Short Description
+                <input type="text" name="description_short" placeholder="A short description of the project to show on the front page." required>
+              </label>
+            </div>
+            <div class="medium-6 column">
+              <label>Description
+                <input type="text" name="description" placeholder="Description" required>
+              </label>
+            </div>
+            <div class="medium-6 column">
+              <label>Project Website
+                <input type="text" name="website" placeholder="https://example.com" required>
+              </label>
+            </div>
+            <div class="medium-6 column">
+              <label>Project Email (optional)
+                <input type="email" name="email" placeholder="johndoe@example.com">
+              </label>
+            </div>
+
+            <input type="submit" class="button expanded" value="Collab!">
+            <p>By clicking "Collab!", you agree that your project complies with our <a href="/terms">Terms and Conditions</a>.</p>
+          </div>
+        </form>
+      {{else}}
+        <div class="row column">
+          <p>Please <a href="/login">Log In</a> or <a href="/register">Sign Up</a> to create a project listing.</p>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
+
+

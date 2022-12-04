@@ -1,0 +1,94 @@
+<br />
+<div class="off-canvas-wrapper">
+  <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+    <div class="large-centered">
+      {{#if error_message}}
+        <!-- Error Message Alert -->
+        <div class="callout alert">
+          <p aria-errormessage>{{error_message}}</p>
+        </div>
+      {{/if}}
+      <form id="account-settings-form" method="post" action="/settings">
+        <div class="row column">
+          <h3>{{title}}</h3>
+          <div class="medium-6 column">
+            <label>First Name
+              <input type="text" name="first_name" value="{{user.first_name}}" required>
+            </label>
+          </div>
+          <div class="medium-6 column">
+            <label>Last Name
+              <input type="text" name="last_name" value="{{user.last_name}}" required>
+            </label>
+          </div>
+          <div class="large-6 column">
+            <label>Email
+              <input type="email" name="email" value="{{user.email}}" required>
+            </label>
+          </div>
+          <div class="large-6 column">
+            <label>Public Contact Email
+              <input type="email" name="contact_email" value="{{user.contact_email}}" required>
+            </label>
+          </div>
+          <div class="medium-6 column">
+            <input id="show_contact_email" name="show_contact_email" type="checkbox" {{#if user.show_contact_email}} checked {{/if}}><label for="show_contact_email">Show Contact Email</label>
+          </div>
+          <hr />
+          <div class="medium-6 column">
+            <label>
+              Bio (A short blurb about yourself)
+              <input type="text" name="bio" value="{{user.bio}}" required>
+            </label>
+          </div>
+          <div class="medium-6 column">
+            <label>
+              Profile Header
+              <input type="text" name="profile_header" value="{{user.profile_header}}" required>
+            </label>
+          </div>
+          <div class="large-6 column">
+            <label>
+              Extended Bio (displayed under profile header)
+              <input type="text" name="extended_bio" value="{{user.extended_bio}}" required>
+            </label>
+          </div>
+          <div class="large-6 column">
+            <label>
+              Profile Picture URL
+              <input type="text" name="icon_url" value="{{user.icon_url}}" required>
+            </label>
+          </div>
+          <div class="large-12 column">
+            <label>
+              Contact Description (How/when can people contact you?)
+              <input type="text" name="contact_schedule" value="{{user.contact_schedule}}" required>
+            </label>
+          </div>
+          <div class="medium-6 column">
+            <label>
+              Current Password
+              <input type="password" name="password" placeholder="********" required>
+            </label>
+          </div>
+          <div class="medium-6 column">
+            <label>
+              New Password (optional)
+              <input type="password" name="new_password" placeholder="********">
+            </label>
+          </div>
+          <div class="grid-x grid-padding-x column">
+            <fieldset class="large-5 cell">
+              <legend>Programming Skill Level</legend>
+              <input type="radio" name="skill" value="Beginner" id="beginner" required><label for="beginner">Beginner</label>
+              <input type="radio" name="skill" value="Intermediate" id="intermediate"><label for="intermediate">Intermediate</label>
+              <input type="radio" name="skill" value="Experienced" id="experienced"><label for="experienced">Experienced</label>
+              <input type="radio" name="skill" value="Expert" id="expert"><label for="expert">Expert</label>
+            </fieldset>
+          </div>
+          <button type="submit" class="button expanded">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

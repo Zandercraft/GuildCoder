@@ -1,0 +1,110 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+const app = require('../app')
+const debug = require('debug')('guild-coder:server')
+const http = require('http')
+const database = require('../database')
+const { Server } = require("socket.io");
+
+/**
+ * Get port from environment and store in Express.
+ */
+let port = normalizePort(process.env.PORT || '8080')
+app.set('port', port)
+
+/**
+ * Create HTTP server and connect Socket.io to it.
+ */
+let server = http.createServer(app);
+const io = new Server(server);
+
+/*
+ * Connect to Database
+ */
+database.connectToDB("mongodb+srv://senecaDBUser:nVZpo97O15m7L6EQ@seneca-web.vw4knv6.mongodb.net/web322_week8")
+
+/*
+ * Listen on provided port, on all network interfaces.
+ */
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+// -- Socket.io User Connection Event Listener --
+io.on('connection', (socket) => {
+  // Log connection
+  process.stdout.write('Socket.io: A user connected to the socket.\n');
+
+  // Set up a listener to forward when a new message is sent
+  socket.on('chat_message_sent', () => {
+    io.emit("new_chat_message")
+  })
+
+  // Setup listener for the user's disconnect
+  socket.on('disconnect', () => {
+    // Log disconnect
+    process.stdout.write('Socket.io: A user disconnected from the socket.\n')
+  })
+});
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val) {
+  let port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  let bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+function onListening() {
+  let addr = server.address();
+  let bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+exports.io = io

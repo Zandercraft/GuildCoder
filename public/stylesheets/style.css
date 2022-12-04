@@ -1,0 +1,20 @@
+body {
+}
+.logo {
+    font-family: Pacifico, serif;
+    font-style: normal;
+    font-size: 26px;
+    font-weight: 700;
+    color: black;
+}
+.logo a {
+    color: inherit;
+}
+
+.logo-inline {
+    font-family: Pacifico, serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: inherit;
+    color: black;
+}

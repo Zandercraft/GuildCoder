@@ -1,0 +1,143 @@
+<br>
+{{#if success_message}}
+  <!-- Success Message Alert -->
+  <div class="callout success">
+    <p>{{success_message}}</p>
+  </div>
+{{/if}}
+<div class="row">
+  <div class="medium-6 columns">
+    <img class="thumbnail" src="https://via.placeholder.com/650x350">
+    <div class="row small-up-4">
+      <div class="column">
+        <img class="thumbnail" src="https://via.placeholder.com/250x200">
+      </div>
+      <div class="column">
+        <img class="thumbnail" src="https://via.placeholder.com/250x200">
+      </div>
+      <div class="column">
+        <img class="thumbnail" src="https://via.placeholder.com/250x200">
+      </div>
+      <div class="column">
+        <img class="thumbnail" src="https://via.placeholder.com/250x200">
+      </div>
+    </div>
+  </div>
+  <div class="medium-6 large-5 columns">
+    <h3>{{title}}</h3>
+    <p>{{project.description}}</p>
+
+    {{#unless is_user_involved}}
+      <a href="/project/{{project.slug}}/collab" class="button large expanded">Collab!</a>
+    {{/unless}}
+
+    <div class="small secondary expanded button-group">
+        <a class="button" href="{{project.website}}"><i class="fa-solid fa-globe"></i> Website</a>
+        <a class="button" href=""><i class="fa-brands fa-twitter"></i> Twitter</a>
+        <a class="button" href=""><i class="fa-brands fa-facebook"></i> Facebook</a>
+      </div>
+    </div>
+</div>
+
+<div class="column row">
+  <hr>
+  <ul class="tabs" data-tabs id="example-tabs">
+    <li class="tabs-title is-active"><a href="#reviews" aria-selected="true">Reviews</a></li>
+    <li class="tabs-title"><a href="#collaborators">Collaborators</a></li>
+    <li class="tabs-title"><a href="#similar">More by the Owners</a></li>
+  </ul>
+  <div class="tabs-content" data-tabs-content="example-tabs">
+    <!-- Reviews Tab -->
+    <div class="tabs-panel is-active" id="reviews">
+      {{#if error_message}}
+        <!-- Error Message Alert -->
+        <div class="callout alert">
+          <p aria-errormessage>{{error_message}}</p>
+        </div>
+      {{/if}}
+      <h4>Reviews</h4>
+      {{#if project.reviews}}
+        {{#each project.reviews}}
+          <div class="media-object stack-for-small">
+            <div class="media-object-section">
+              <img class="thumbnail" width="150" height="150" src="{{author.icon_url}}">
+            </div>
+            <div class="media-object-section">
+              <h5>{{author.first_name}} {{author.last_name}}</h5>
+              <p>{{content}}</p>
+            </div>
+          </div>
+        {{/each}}
+      {{else}}
+        <p><em>No reviews yet.{{#unless is_user_involved}} Be the first to leave one!{{/unless}}</em></p>
+      {{/if}}
+
+      {{#unless is_user_involved}}
+        <form method="post" action="/project/{{project.slug}}/review">
+          <label>
+            My Review
+            {{#if user}}
+              <textarea name="review" placeholder="I think that..."></textarea>
+            {{else}}
+              <textarea name="review" placeholder="Log In or Register to leave a review." disabled></textarea>
+            {{/if}}
+          </label>
+          <button class="button" type="submit">Submit Review</button>
+        </form>
+      {{/unless}}
+    </div>
+    <!-- Collaborators Tab -->
+    <div class="tabs-panel" id="collaborators">
+      <h4>Collaborators</h4>
+      {{#each project.owners}}
+        <div class="media-object stack-for-small">
+          <div class="media-object-section">
+            <a href="/profile/{{username}}">
+              <img class="thumbnail" width="100" height="100" src="{{icon_url}}" alt="{{username}}'s profile picture">
+            </a>
+          </div>
+          <div class="media-object-section">
+            <h5>{{first_name}} {{last_name}} <strong class="logo-inline">- Owner</strong></h5>
+            <p>{{bio}}</p>
+          </div>
+        </div>
+      {{/each}}
+      {{#each project.collaborators}}
+        <div class="media-object stack-for-small">
+          <div class="media-object-section">
+            <a href="/profile/{{username}}">
+              <img class="thumbnail" width="100" height="100" src="{{icon_url}}" alt="{{username}}'s profile picture">
+            </a>
+          </div>
+          <div class="media-object-section">
+            <h5>{{first_name}} {{last_name}}</h5>
+            <p>{{bio}}</p>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+    <!-- Other Projects By Owners -->
+    <div class="tabs-panel" id="similar">
+      <div class="row medium-up-3 large-up-5">
+        {{#each other_projects}}
+          <div class="column">
+            <img class="thumbnail" src="{{image_url}}" alt="{{name}}'s Project Image">
+            <h5>{{name}} <small>- {{collaborators.length}} <i class="fa-solid fa-users"></i></small></h5>
+            <p>{{description_short}}</p>
+            <a href="/project/{{slug}}" class="button hollow tiny expanded">Collab!</a>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+{{#if redirectToProject}}
+  <script>
+    window.setTimeout(function(){
+      // Move back to project page after 5 seconds.
+      window.location.href = "/project/{{project.slug}}";
+    }, 5000);
+  </script>
+{{/if}}

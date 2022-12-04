@@ -1,0 +1,137 @@
+<br>
+{{#if success_message}}
+  <!-- Success Message Alert -->
+  <div class="callout success">
+    <p>{{success_message}}</p>
+  </div>
+{{/if}}
+<div class="column row">
+  <h3>{{title}}</h3>
+
+  <hr>
+
+  <div class="grid-container">
+    <div class="grid-x">
+      <div class="cell medium-2">
+        <ul class="vertical tabs" data-tabs id="example-tabs">
+          {{#each user_conversations}}
+            <li class="tabs-title {{#if @first}}is-active{{/if}}"><a href="#panel_{{_id}}" {{#if @first}}aria-selected="true" {{/if}}>{{name}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+      <div class="cell medium-9">
+        <div class="tabs-content vertical" data-tabs-content="example-tabs">
+          {{#each user_conversations}}
+            <div class="tabs-panel {{#if @first}}is-active{{/if}}" id="panel_{{_id}}">
+              <h4>{{name}}</h4>
+              {{#if messages}}
+                <div id="{{_id}}_messages" style="height: 21em; line-height: 3em; overflow: auto; padding: 5px;">
+
+                </div>
+              {{else}}
+                <!-- No conversation messages -->
+                <div class="callout primary">
+                  <p><em>No messages yet. Be the first to send one!</em></p>
+                </div>
+              {{/if}}
+              <div id="message_form">
+                <label>
+                  <input id="{{_id}}_message" type="text" placeholder="Your message."></input>
+                </label>
+                <button id="{{_id}}_send_message" class="button">Send</button>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{#if is_user_involved}}
+  <!-- Socket.io Chat System Scripts -->
+  <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+
+  <script>
+    // --- Client-Sided Send Handler (Reduce need for page refreshes) ---
+    let socket = io();
+    {{#each user_conversations}}
+    $(document).ready(
+            () => {
+              function scrollToBottom(){
+                let chat_box = document.getElementById('{{_id}}_messages');
+                chat_box.scrollTop = chat_box.scrollHeight;
+              }
+
+              // Listen for click events on the send button
+              $("#{{_id}}_send_message").click(async () => {
+                // Send the message
+                sendMessage({ message: $("#message").val() })
+                await new Promise(r => setTimeout(r, 300)) // Wait a bit for server to process data
+                socket.emit("chat_message_sent") // Send message sent event
+                document.getElementById("{{_id}}_message").value = '' // Empty chat entry box
+              })
+
+              // Listen for enter keypress events on the input box
+              $("#{{_id}}_message").on("keypress", async (e) => {
+                // Ensure it is the enter key
+                if (e.which === 13) {
+                  // Disable the chat box to prevent multiple submissions
+                  $(this).attr("disabled", "disabled");
+
+                  // Send the message
+                  sendMessage({ message: $("#{{_id}}_message").val() })
+                  await new Promise(r => setTimeout(r, 300)) // Wait a bit for server to process data
+                  socket.emit("chat_message_sent") // Send message sent event
+                  document.getElementById("{{_id}}_message").value = '' // Empty chat entry box
+
+                  // Re-enable the chat box
+                  $(this).removeAttr("disabled");
+                }
+              })
+
+              // Adds a message to the list of messages
+              function addMessage(message){
+                let timestamp = new Date(message.sent_on)
+                $("#{{_id}}_messages").append(`
+                  <div class="column">
+                    <h6><a href='${message.author.username === "Deleted User" ? "" : "/profile/" + message.author.username}'>${message.author.username}</a><small> - ${String(timestamp.toDateString())} - ${String(timestamp.toLocaleTimeString('en-CA'))}</small></h6>
+                    <p>
+                    ${message.message} ${message.edited ? '<small><em>(edited)</em></small>' : ''}
+                    </p>
+                  </div>
+                `)
+              }
+
+              // Gets all the messages from the server.
+              function getMessages(){
+                console.log("Fetching messages from server...")
+
+                // Delete all visible messages
+                document.getElementById('{{_id}}_messages').innerHTML = ''
+
+                // Get new messages and add them.
+                $.get(`${window.location.href}/{{_id}}`, (messages) => {
+                  console.log(messages)
+                  messages.forEach(addMessage)
+                  scrollToBottom()
+                })
+              }
+
+              // Sends a message to the server.
+              function sendMessage(message){
+                console.log("Sending message to server...")
+                $.post(`${window.location.href}/{{_id}}`, message)
+                scrollToBottom()
+              }
+
+              // Register message listener.
+              socket.on('new_chat_message', getMessages)
+
+              // Fetch all messages on load.
+              getMessages()
+              scrollToBottom()
+            })
+    {{/each}}
+  </script>
+{{/if}}

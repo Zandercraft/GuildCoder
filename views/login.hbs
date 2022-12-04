@@ -1,0 +1,41 @@
+<div class="off-canvas-wrapper">
+  <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+    <div class="callout primary">
+      <div class="row column">
+        <h1 class="logo">Welcome Back!</h1>
+        <p class="lead">Thanks for returning! We look forward to seeing what you build!</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="large-centered">
+        {{#if error_message}}
+          <!-- Error Message Alert -->
+          <div class="callout alert">
+            <p aria-errormessage>{{error_message}}</p>
+          </div>
+        {{/if}}
+
+        <form name="login" id="login-form" method="post" action="/login">
+          <label>Email
+            <input type="email" name="email" placeholder="johndoe@example.com" required>
+          </label>
+          <label>
+            Password
+            <input type="password" name="password" placeholder="********" required>
+          </label>
+          <div class="g-recaptcha" data-sitekey="{{captcha_site_key}}"></div>
+          <br />
+          <button class="button expanded" type="submit">Log In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ReCaptcha Callback
+  function onSubmit(token) {
+    console.log(token)
+    document.getElementById("login-form").submit()
+  }
+</script>
