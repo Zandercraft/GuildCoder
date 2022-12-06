@@ -128,7 +128,7 @@ router.get('/:guild/messages', function (req, res) {
   }
 })
 
-/* POST project review form. */
+/* POST guild's messages. */
 router.post('/:guild/messages', function (req, res) {
   const sessionUser = req.session.user
   const guildSlug = req.params.guild

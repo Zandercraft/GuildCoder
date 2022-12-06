@@ -53,3 +53,19 @@ body {
 .badge-Expert {
     background:red;
 }
+
+.user-list {
+    border:2px solid #cccccc;
+    width: auto;
+    height: 20em;
+    overflow-y: scroll;
+}
+
+.chat-bar {
+    width: 20%
+}
+
+.chat-window {
+    border:2px solid #cccccc;
+    width: 80%;
+}

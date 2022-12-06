@@ -1,0 +1,35 @@
+<br>
+
+<div class="column row">
+  <h3>{{title}}</h3>
+  <hr>
+
+  <div class="grid-container">
+    {{#if error_message}}
+      <!-- Error Message Alert -->
+      <div class="callout alert">
+        <p>{{error_message}}</p>
+        <a class="button secondary" href="/messages">Go Back</a>
+      </div>
+    {{else}}
+      <!-- New Conversation Form -->
+      <form action="/messages/create" method="post">
+        <label>Conversation Name
+        <input type="text" name="name" placeholder="My Conversation" required>
+        </label>
+        <div class="user-list">
+          {{#each users}}
+            <div style="padding-left: 5px">
+              <label>
+                <input type="checkbox" name="participants" value="{{_id}}">
+                {{username}}
+              </label>
+            </div>
+          {{/each}}
+        </div>
+        <br />
+        <button class="button" type="submit">Create</button>
+      </form>
+    {{/if}}
+  </div>
+</div>

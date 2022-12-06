@@ -43,6 +43,11 @@ io.on('connection', (socket) => {
     io.emit(`new_chat_message_${guild_slug}`)
   })
 
+  // Set up a listener to forward when a new private message is sent
+  socket.on('private_message_sent', (channel_id) => {
+    io.emit(`new_private_message_${channel_id}`)
+  })
+
   // Setup listener for the user's disconnect
   socket.on('disconnect', () => {
     // Log disconnect
@@ -104,7 +109,7 @@ function onListening() {
   let bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  process.stdout.write('Express: Server listening on ' + bind + '\n');
 }
 
 module.exports.sio = io

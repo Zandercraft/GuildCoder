@@ -185,6 +185,21 @@ exports.getUserByUsername = (u_username) => {
 }
 
 /*
+ * Gets the users with the provided usernames.
+*/
+exports.getUsersByUsername = (u_usernames) => {
+  // Fetch information about the users with the given ids
+  return User.find({ username: u_usernames }).exec().then((users) => {
+    // Users found.
+    return users
+  }).catch((reason) => {
+    // No users found with these names.
+    console.log(reason)
+    return false
+  })
+}
+
+/*
  * Gets an array of all existing users.
 */
 exports.getAllUsers = () => {

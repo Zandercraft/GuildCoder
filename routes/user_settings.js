@@ -1,5 +1,6 @@
 const express = require('express')
 const database = require('../database')
+const repl = require('repl')
 const router = express.Router()
 
 /* GET user settings page. */
@@ -10,7 +11,29 @@ router.get('/', function (req, res) {
   if (sessionUser !== undefined) {
     res.render('user_settings', {
       title: 'Account Settings',
-      user: sessionUser
+      user: sessionUser,
+      page_number: 1,
+      possible_pages: Array.from(Array(Math.floor(sessionUser.login_history.length / 10)).keys()).slice(1),
+      login_history: sessionUser.login_history.slice(0, 10)
+    })
+  } else {
+    res.redirect('/')
+  }
+})
+
+/* GET user settings page (paginated) */
+router.get('/:page_number', function (req,res) {
+  const sessionUser = req.session.user
+  const pageNum = req.params.page_number
+
+  // Only send to user settings page if the user is logged in
+  if (sessionUser !== undefined) {
+    res.render('user_settings', {
+      title: 'Account Settings',
+      user: sessionUser,
+      page_number: pageNum,
+      possible_pages: Array.from(Array(Math.floor(sessionUser.login_history.length / 10)).keys()).slice(1),
+      login_history: sessionUser.login_history.slice((pageNum - 1) * 10, ((pageNum - 1) * 10) + 10)
     })
   } else {
     res.redirect('/')
