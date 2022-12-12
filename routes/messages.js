@@ -30,6 +30,12 @@ router.get('/create', function (req, res) {
   // Ensure user is logged in.
   if (sessionUser !== undefined) {
     database.getAllUsers().then((all_users) => {
+      // Find and remove the sessionUser from the list
+      let currUserIdx = all_users.findIndex((user) => {
+        return user.username === sessionUser.username
+      })
+      all_users.splice(currUserIdx, 1)
+
       res.render('messages_create', {
         title: 'New Conversation',
         user: sessionUser,
@@ -57,9 +63,18 @@ router.post('/create', (req, res) => {
   if (sessionUser !== undefined) {
     // Ensure at least one user is provided
     if (req.body.participants.length > 0) {
+      // Add the sessionUser to the conversation
+      let participants
+      if (typeof(req.body.participants) === "string") {
+        participants = [req.body.participants]
+      } else {
+        participants = req.body.participants
+      }
+      participants.push(sessionUser._id)
+
       // Get the users by their IDs
-      database.getUsersById(req.body.participants).then((users) => {
-        // Valid users selected. Create a conversation
+      database.getUsersById(participants).then((users) => {
+        // Valid users selected. Create a conversation with the selected users
         database.createConversation(req.body.name, users).then((conversation) => {
           // Conversation created. Redirect user to their messages.
           res.redirect('/messages')
@@ -107,7 +122,6 @@ router.post('/create', (req, res) => {
         })
         process.stdout.write('ERROR: Unable to retrieve selected users to create conversation with: ', reason)
       })
-      database.createConversation(req.body.name, req.body.participants)
     } else {
       database.getAllUsers().then((all_users) => {
         res.render('messages_create', {
@@ -146,7 +160,7 @@ router.get('/:id', function (req, res) {
         // Construct a JSON object to return
         let messages = []
         // Populate messages
-        for (let message in conversation.messages) {
+        for (let message of conversation.messages) {
           messages.push({
             author: {
               username: message.author ? message.author.username : 'Deleted User',

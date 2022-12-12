@@ -618,7 +618,7 @@ exports.getConversationById = (id) => {
   // Fetch information about the conversation with the given id
   return Conversation.find({ _id: id }).populate('participants').populate('messages.author').exec().then((conversation) => {
     // Conversation found.
-    return conversation
+    return conversation[0]
   }).catch(() => {
     // No conversation found with this id.
     return false
