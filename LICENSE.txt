@@ -1,8 +1,9 @@
 Copyright © 2022 Zander Maitland. All rights reserved.
+Copyright © 2022 Zandercraft. All rights reserved.
 
-Non-transferable permission is hereby granted, free of charge, to Professor Sunny Shi of Seneca College, obtaining a
-copy of these software files (the "Software"), to exercise, in a limited capacity, the rights to use, copy, modify, and
-demonstrate the capabilities of the Software; subject to the following conditions:
+Non-transferable permission is hereby granted, free of charge, to Professor Sunny Shi - employed by Seneca College as of
+11 December 2022 - obtaining a copy of these software files (the "Software"), to exercise, in a limited capacity, the
+rights to use, copy, modify, evaluate, and demonstrate the capabilities of the Software; subject to the following conditions:
 
 - Modification is carried out solely for the purpose of fixing issues that prevent the software from running.
 - The Software may not be redistributed to any other persons.
