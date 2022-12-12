@@ -7,7 +7,10 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
   first_name: String,
   last_name: String,
-  username: String,
+  username: {
+    type: String,
+    unique: true
+  },
   email: String,
   password: String,
   skill: String,
@@ -601,8 +604,6 @@ exports.getConversationById = (id) => {
   // Fetch information about the conversation with the given id
   return Conversation.find({ _id: id }).populate('participants').populate('messages.author').exec().then((conversation) => {
     // Conversation found.
-    console.log(conversation)
-    console.log(conversation.messages)
     return conversation
   }).catch(() => {
     // No conversation found with this id.
