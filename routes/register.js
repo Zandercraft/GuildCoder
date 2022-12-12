@@ -35,7 +35,6 @@ router.post('/', function (req, res) {
       // All information was supplied. Validate that account is unique.
       database.getUserByUsername(req.body.username).then((user) => {
         if (user !== null) {
-          console.log(user)
           res.render('register', {
             title: 'Register',
             error_message: 'A user with this email already exists!'

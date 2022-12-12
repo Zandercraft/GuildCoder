@@ -41,7 +41,6 @@ router.post('/create', function (req, res) {
         } else {
           // Project is unique. Create the new project.
           database.createProject(req.body.name, p_slug, req.body.description, req.body.description_short, req.body.website, req.body.category, req.body.email, [req.session.user._id]).then((newProject) => {
-            console.log(project)
             // Ensure project was created successfully
             if (newProject !== null) {
               // Created successfully, redirect to the project's page

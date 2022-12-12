@@ -41,7 +41,6 @@ router.post('/create', function (req, res) {
         } else {
           // Project is unique. Create the new guild.
           database.createGuild(req.body.name, g_slug, req.body.description, req.body.description_short, req.body.website, req.body.email, [sessionUser._id]).then((newGuild) => {
-            console.log(guild)
             // Ensure guild was created successfully
             if (newGuild !== null) {
               // Created successfully, redirect to the project's page

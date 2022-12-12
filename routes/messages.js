@@ -53,7 +53,6 @@ router.get('/create', function (req, res) {
 router.post('/create', (req, res) => {
   const sessionUser = req.session.user
 
-  console.log(req.body)
   // Ensure user is logged in
   if (sessionUser !== undefined) {
     // Ensure at least one user is provided
