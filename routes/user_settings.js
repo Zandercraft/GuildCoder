@@ -71,7 +71,7 @@ router.post('/', async function (req, res) {
             if (user[0] !== false) {
               let showContactEmail = (req.body.show_contact_email !== undefined)
               // Check if new password specified
-              database.updateUser(sessionUser.email, {
+              let updatedUser = {
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
                 email: req.body.email,
@@ -85,17 +85,31 @@ router.post('/', async function (req, res) {
                 skill: req.body.skill,
                 password: req.body.new_password,
                 old_password: sessionUser.password
-              }).then((updatedUser) => {
+              }
+              database.updateUser(sessionUser.email, updatedUser).then((updated) => {
                 // Ensure user was updated successfully
-                if (updatedUser) {
-                  // Updated successfully, log user out and redirect home
-                  res.redirect('/')
+                if (updated) {
+                  // Updated successfully, fetch new user info and update the user's session
+                  database.getUserByEmail(updatedUser.email).then((user) => {
+                    req.session.user = user
+                    res.redirect('/')
+                  })
                 } else {
                   // User update failed
                   res.render('user_settings', {
                     title: 'Account Settings',
                     user: sessionUser,
                     error_message: 'Account settings update failed. Please contact support@zandercraft.ca.'
+                  })
+                }
+              }).catch((reason) => {
+                // Catch attempt to update to an existing email
+                if (reason.code === 11000) {
+                  // User update failed
+                  res.render('user_settings', {
+                    title: 'Account Settings',
+                    user: sessionUser,
+                    error_message: 'This email is already in use by another account. Please try another.'
                   })
                 }
               })

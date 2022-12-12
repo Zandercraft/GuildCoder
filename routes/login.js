@@ -35,7 +35,7 @@ router.post('/', async function (req, res) {
       })
     } else {
       // All information was supplied. Find the account.
-      database.authUser(req.body.email, req.body.password).then((result) => {
+      database.authUser(req.body.email, req.body.password, true, req.get('User-Agent')).then((result) => {
         if (result[0]) {
           req.session.user = result[1]
           res.redirect('/')

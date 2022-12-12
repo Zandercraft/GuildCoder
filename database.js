@@ -11,7 +11,10 @@ const userSchema = new Schema({
     type: String,
     unique: true
   },
-  email: String,
+  email: {
+    type: String,
+    unique: true
+  },
   password: String,
   skill: String,
   bio: String,
@@ -220,7 +223,7 @@ exports.getAllUsers = () => {
 /*
  * Checks if the corresponding password matches that of the provided email.
 */
-exports.authUser = (u_email, u_password, u_agent="Unknown") => {
+exports.authUser = (u_email, u_password, log_history = false, u_agent="Unknown") => {
   // Fetch information about the user with the given email
   return User.findOne({ email: u_email }).exec().then((user) => {
     // User found. Check password.
@@ -228,17 +231,28 @@ exports.authUser = (u_email, u_password, u_agent="Unknown") => {
       // Check if it is a match
       if (isMatch) {
         // Update the user's login history.
-        return User.updateOne(
-          { email: u_email },
-          { $push: {login_history: {timestamp: new Date(), userAgent: u_agent}} }
-        ).exec().then(()=>{
-          // Auth was successful and login history updated,
+        if (log_history) {
+          let newLogin = {timestamp: new Date(), userAgent: String(u_agent)}
+
+          // Add the new login to the user's login history
+          return User.updateOne(
+            { email: u_email },
+            { $push: {login_history: newLogin} }
+          ).exec().then(()=>{
+            // Auth was successful and login history updated.
+            user.login_history.push(newLogin)
+            return [true, user]
+          }).catch((reason) => {
+            user.login_history.push(newLogin)
+            // Auth was successful, but failed to update the user's login history.
+            process.stdout.write(`ERROR (while updating user's login history): ${reason}\n`)
+            return [true, user]
+          })
+        } else {
+          // Auth was successful. Return user without logging to user's history.
           return [true, user]
-        }).catch((reason) => {
-          // Auth was successful, but failed to update the user's login history.
-          process.stdout.write(`ERROR (while updating user's login history): ${reason}\n`)
-          return [true, user]
-        })
+        }
+
       } else {
         // User's authentication was invalid.
         return [false, undefined]
