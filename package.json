@@ -9,7 +9,7 @@
   "contributors": [
     "Zander Maitland"
   ],
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE.txt",
   "homepage": "https://guildcoder.ca",
   "keywords": [],
   "repository": {
@@ -31,7 +31,6 @@
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "express-recaptcha": "^5.1.0",
     "express-session": "^1.17.3",
     "hbs": "^4.2.0",
     "http-errors": "~1.6.3",
