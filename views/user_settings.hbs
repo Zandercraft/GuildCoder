@@ -88,20 +88,24 @@
           </div>
           <button type="submit" class="button expanded">Update</button>
         </div>
-      </form>
-
-      <!-- User Login History -->
-
-      <nav aria-label="Pagination">
-        <ul class="pagination">
-          <li class="pagination-previous disabled">Previous <span class="show-for-sr">page</span></li>
-          {{#each possible_pages}}
-            <li {{#equals this page_number}}class="current"{{/equals}}><a href="{{this}}" aria-label="Page {{this}}">{{#equals this page_number}}<span class="show-for-sr">You're on page</span>{{/equals}}{{this}}</a></li>
+        <!-- User Login History -->
+        <table class="row column">
+          <thead>
+          <tr>
+            <th>Login Date</th>
+            <th>User Agent</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{#each login_history}}
+            <tr>
+              <td>{{formatTimestamp timestamp}}</td>
+              <td>{{userAgent}}</td>
+            </tr>
           {{/each}}
-          <!--<li class="ellipsis" aria-hidden="true"></li>-->
-          <li class="pagination-next"><a href="#" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
-        </ul>
-      </nav>
+          </tbody>
+        </table>
+      </form>
     </div>
   </div>
 </div>

@@ -49,6 +49,10 @@ hbs.registerHelper("formatDate", function(date) {
   let unformattedDate = new Date(date)
   return String(unformattedDate.toISOString().slice(0, 10)) // Return only date portion of string
 });
+hbs.registerHelper("formatTimestamp", function(timestamp) {
+  let unformattedTime = new Date(timestamp)
+  return String(unformattedTime.toString())
+});
 hbs.registerHelper('equals', function(arg1, arg2, options) {
   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });
