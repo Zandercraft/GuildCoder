@@ -24,7 +24,7 @@ const io = new Server(server);
 /*
  * Connect to Database
  */
-database.connectToDB("mongodb+srv://senecaDBUser:nVZpo97O15m7L6EQ@seneca-web.vw4knv6.mongodb.net/web322_week8")
+database.connectToDB("mongodb+srv://<username>:<password>@seneca-web.vw4knv6.mongodb.net/web322_week8")
 
 /*
  * Listen on provided port, on all network interfaces.
