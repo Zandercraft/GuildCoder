@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const database = require('../database')
-const site_key = "6LeGu90iAAAAAJ-zHbL2AzIGySIpyEwI2cgMJZnq"
-const site_secret = "6LeGu90iAAAAAKKdUxk0LT8V7L7rBBxhErnPFbCr"
+const site_key = "<SITE_KEY>"
+const site_secret = "<SITE_SECRET>"
 
 /* GET login page. */
 router.get('/', function (req, res) {
