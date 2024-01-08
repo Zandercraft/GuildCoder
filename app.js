@@ -70,7 +70,7 @@ app.use(session({
   },
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: "mongodb+srv://senecaDBUser:nVZpo97O15m7L6EQ@seneca-web.vw4knv6.mongodb.net/web322_week8" })
+  store: MongoStore.create({ mongoUrl: "mongodb+srv://<username>:<password>@seneca-web.vw4knv6.mongodb.net/web322_week8" })
 }))
 app.use(express.static(path.join(__dirname, 'public')))
 
